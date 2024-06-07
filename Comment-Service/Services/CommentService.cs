@@ -1,4 +1,5 @@
 ﻿using Comment_Service.Entities;
+using Comment_Service.Kafka;
 using Comment_Service.Repositories;
 
 namespace Comment_Service.Services;
@@ -6,13 +7,16 @@ namespace Comment_Service.Services;
 public class CommentService : ICommentService
 {
     private readonly ICommentRepository _repository;
+    private readonly IKafkaProducer _kafkaProducer;
 
-    public CommentService(ICommentRepository repository)
+    public CommentService(ICommentRepository repository, IKafkaProducer kafkaProducer)
     {
         _repository = repository;
+        _kafkaProducer = kafkaProducer;
     }
     public Task<List<Comment>> GetComments()
     {
+        _kafkaProducer.SendMessage("bzbz", "test-topic");
         return _repository.GetAll();
     }
 
