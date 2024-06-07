@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Windows\system32\kompose.exe convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: comment-service
+  name: comment-service
+spec:
+  selector:
+    matchLabels:
+      io.kompose.service: comment-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Windows\system32\kompose.exe convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/backend: "true"
+        io.kompose.service: comment-service
+    spec:
+      containers:
+        - image: tendeza/sem6-comment-service:latest
+          name: comment-service
+          ports:
+            - containerPort: 8083
+          resources:
+            limits:
+                cpu: "1000m"
+                memory: "1000Mi"
+      restartPolicy: Always
+status: {}
