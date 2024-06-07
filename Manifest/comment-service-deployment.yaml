@@ -27,7 +27,7 @@ spec:
         - image: tendeza/sem6-comment-service:latest
           name: comment-service
           ports:
-            - containerPort: 8083
+            - containerPort: 8082
           resources:
             limits:
                 cpu: "1000m"

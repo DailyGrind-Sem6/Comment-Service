@@ -10,9 +10,9 @@ metadata:
   name: comment-service
 spec:
   ports:
-    - name: "8083"
-      port: 8083
-      targetPort: 8083
+    - name: "8082"
+      port: 8082
+      targetPort: 8082
   selector:
     io.kompose.service: comment-service
 status:
