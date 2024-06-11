@@ -1,4 +1,5 @@
-﻿using Comment_Service.Entities;
+﻿using System.Text.Json;
+using Comment_Service.Entities;
 using Comment_Service.Kafka;
 using Comment_Service.Repositories;
 
@@ -16,7 +17,6 @@ public class CommentService : ICommentService
     }
     public Task<List<Comment>> GetComments()
     {
-        _kafkaProducer.SendMessage("bzbz", "test-topic");
         return _repository.GetAll();
     }
 
@@ -31,9 +31,20 @@ public class CommentService : ICommentService
         return comment;
     }
 
-    public Task<Comment> CreateComment(Comment comment)
+    public async Task<Comment> CreateComment(Comment comment)
     {
-        return _repository.Create(comment);
+        var createdComment = await _repository.Create(comment);
+        
+        if (createdComment != null)
+        {
+            // Convert the comment or the postId to a string format that can be sent to Kafka
+            var message = JsonSerializer.Serialize(createdComment.PostId);
+
+            // Send the message to the "comment-created" topic
+            await _kafkaProducer.SendMessage(message, "comment-created");
+        }
+
+        return createdComment;
     }
 
     public async Task UpdateComment(string id, Comment comment)
