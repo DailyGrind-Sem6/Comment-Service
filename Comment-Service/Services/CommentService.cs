@@ -38,10 +38,9 @@ public class CommentService : ICommentService
         if (createdComment != null)
         {
             // Convert the comment or the postId to a string format that can be sent to Kafka
-            var message = JsonSerializer.Serialize(createdComment.PostId);
 
             // Send the message to the "comment-created" topic
-            await _kafkaProducer.SendMessage(message, "comment-created");
+            await _kafkaProducer.SendMessage(createdComment.PostId, "comment-created");
         }
 
         return createdComment;
