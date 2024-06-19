@@ -30,7 +30,7 @@ spec:
             - containerPort: 8082
           resources:
             limits:
-                cpu: "500m"
+                cpu: "1000m"
                 memory: "500Mi"
       restartPolicy: Always
 status: {}
