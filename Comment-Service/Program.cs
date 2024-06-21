@@ -1,4 +1,5 @@
 using Comment_Service.Database;
+using Comment_Service.Kafka;
 using Comment_Service.Repositories;
 using Comment_Service.Services;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,9 @@ builder.Services.AddSingleton<ICommentRepository, CommentRepository>();
 builder.Services.AddSingleton<ICommentService, CommentService>();
 
 builder.Services.AddSingleton<IMongoClient>(new MongoClient(builder.Configuration.GetValue<string>("CommentDatabase:ConnectionString")));
+builder.Services.AddSingleton<IKafkaProducer, KafkaProducer>();
+
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 
